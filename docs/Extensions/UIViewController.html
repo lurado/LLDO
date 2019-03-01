@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>UIViewController Extension Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Extension/UIViewController" class="dashAnchor"></a>
+    <a title="UIViewController Extension Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">LLDO Docs</a> (100% documented)</p>
+        <p class="header-right"><a href="https://github.com/lurado/LLDO"><img src="../img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fgithub%2Ecom%2Flurado%2FLLDO%2Ftree%2Fmaster%2Fdocs%2Fdocsets%2FLLDO%2Exml"><img src="../img/dash.png"/>Install in Dash</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">LLDO Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        UIViewController Extension Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/NSObject.html">NSObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIView.html">UIView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIViewController.html">UIViewController</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>UIViewController</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">UIViewController</span> <span class="p">:</span> <span class="kt">UIResponder</span><span class="p">,</span> <span class="kt">NSCoding</span><span class="p">,</span> <span class="kt">UIAppearanceContainer</span><span class="p">,</span> <span class="kt">UITraitEnvironment</span><span class="p">,</span> <span class="kt">UIContentContainer</span><span class="p">,</span> <span class="kt">UIFocusEnvironment</span></code></pre>
+
+                </div>
+              </div>
+            
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@LLDO@@objc(cs)UIViewController(cpy)current"></a>
+                    <a name="//apple_ref/swift/Variable/current" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@LLDO@@objc(cs)UIViewController(cpy)current">current</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The current as in top most view controller.</p>
+
+<p>When determining the current view controller the following rules are applied recursively:</p>
+
+<ul>
+<li>Start with the window&rsquo;s root view controller</li>
+<li>If a view controller is presented, select it</li>
+<li>For a navigation controller, select the top view controller</li>
+<li>For a tab bar controller, select the selected view controller</li>
+<li>For a custom container view controller, select the last child view controller</li>
+</ul>
+<h4 id='example' class='heading'>Example</h4>
+<pre class="highlight swift"><code><span class="n">po</span> <span class="kt">UIViewController</span><span class="o">.</span><span class="n">current</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">static</span> <span class="k">var</span> <span class="nv">current</span><span class="p">:</span> <span class="kt">UIViewController</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/lurado/LLDO/tree/master/swift_helper/UIViewController+LLDO.swift#L27-L42">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="https://lurado.com" target="_blank" rel="external">Julian Raschke und Sebastian Ludwig GbR</a>. All rights reserved. (Last updated: 2019-03-01)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
