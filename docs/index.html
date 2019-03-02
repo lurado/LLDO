@@ -15,7 +15,7 @@
       <div class="content-wrapper">
         <p><a href="index.html">LLDO Docs</a> (100% documented)</p>
         <p class="header-right"><a href="https://github.com/lurado/LLDO"><img src="img/gh.png"/>View on GitHub</a></p>
-        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fgithub%2Ecom%2Flurado%2FLLDO%2Ftree%2Fmaster%2Fdocs%2Fdocsets%2FLLDO%2Exml"><img src="img/dash.png"/>Install in Dash</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Flurado%2Egithub%2Eio%2FLLDO%2Fdocsets%2FLLDO%2Exml"><img src="img/dash.png"/>Install in Dash</a></p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -48,49 +48,106 @@
         <section>
           <section class="section">
             
-            <h1 id='todo' class='heading'>TODO</h1>
+            <h1 id='lldo-lldb-helpers-by-lurado' class='heading'>🐲 LLDO - LLDB helpers by Lurado</h1>
+<h2 id='motivation' class='heading'>Motivation</h2>
 
-<ul>
-<li>publish (LLDO - Lurado LLDB helpers)</li>
-<li>Documentation
+<p>While LLDB commands are nice, helpers in Swift are <em>way</em> more convenient, easier to write, test and maintain.</p>
 
-<ul>
-<li>Documentation for proofimage commands</li>
-<li>Rework README</li>
-</ul></li>
-<li>create issue: breakpoints.py
+<p>This project has been heavily inspired by <a href="https://twitter.com/kastiglione">@kastiglione</a>. You should check out his <a href="https://www.youtube.com/watch?v=9Io2_W1iDLQ">talk</a>.</p>
+<h2 id='try-it' class='heading'>Try It</h2>
 
-<ul>
-<li><a href="https://gist.github.com/kastiglione/d7fc5b3b3ebab1248333b858591e06b0#file-lldbinit">https://gist.github.com/kastiglione/d7fc5b3b3ebab1248333b858591e06b0#file-lldbinit</a></li>
-<li><a href="https://youtu.be/9Io2_W1iDLQ?t=1250">https://youtu.be/9Io2_W1iDLQ?t=1250</a></li>
-<li><a href="https://github.com/kastiglione/lldb-helpers">https://github.com/kastiglione/lldb-helpers</a></li>
-<li><a href="https://www.dropbox.com/s/9sv67e7f2repbpb/lldb-commands-map.png?dl=0">https://www.dropbox.com/s/9sv67e7f2repbpb/lldb-commands-map.png?dl=0</a>
--&gt; create bif =&gt; breakpoint if/condition (-F -&gt; lldb-helpers)
--&gt; create baction =&gt; breakpoint action (-o -&gt; youtube)
--&gt; add docu on how to write scripts</li>
-</ul></li>
-</ul>
-<h1 id='lldo-lldb-helpers-by-lurado' class='heading'>LLDO - LLDB helpers by Lurado</h1>
+<ol>
+<li>Clone this repo</li>
+<li>Open the <code>LLDOSwiftHelper.xcodeproj</code> Xcode project</li>
+<li>Set a breakpoint in `AppDelegate.applicationDidBecomeActive</li>
+<li>Run in the Simulator</li>
+<li>Start messing around. For example</li>
+</ol>
+<pre class="highlight plaintext"><code># Highlights
+po UIView.current.highlightLayoutMargins(depth: 2)
+po UIView.current.highlightLayoutMargins(false, depth: .max)
 
-<p>Heavily inspired by <a href="https://gist.github.com/kastiglione/d7fc5b3b3ebab1248333b858591e06b0">kastiglione</a>, you should check out his <a href="https://www.youtube.com/watch?v=9Io2_W1iDLQ">talk</a>.</p>
+# Poking around
+po UIButton.first()
+po UIView.current.all(UILabel.self)
+po UIView.grep("Pass")
+po UIView.find(byAccessibilityID: "username_input")
+po UIView.current.tree().filter { $0.isHidden }
+
+# Changing stuff
+po UITextField.first()?.enterText("lldo@lurado.com")
+po UISwitch.first()?.slide()
+po UIButton.first()?.tap()
+# you can build powerful automations with this - see below
+
+# For the rest we need additional LLDO's LLDB commands
+# Hint: You can use drag and drop the path from Finder 📎
+command script import &lt;/path/to&gt;/LLDO
+
+# Load a reference design to check for abberations
+proofimage &lt;/path/to&gt;/LLDO/LLDOSwiftHelper/demo_reference.png
+po UIImageView.at(&lt;memory address&gt;).removeFromSuperview()
+# OR
+po UIView.root.overlay()
+</code></pre>
 <h2 id='installation' class='heading'>Installation</h2>
 
-<p>Clone this repo and add </p>
+<p>Add the following line to your <code>~/.lldbinit</code>:</p>
 <pre class="highlight plaintext"><code>command script import /path/to/LLDO
 </code></pre>
 
-<p>to your <code>~/.lldbinit</code></p>
-<h2 id='usage' class='heading'>Usage</h2>
+<p>This loads LLDO&rsquo;s LLDB commands by default and makes them available in every project. Whenever you are in LLDB you can type <code>lldo</code> to load the Swift helper methods.</p>
 
-<p>TODO: how to try it out: run example Project (does not really work :-/ -&gt; need to break in a Swift frame)</p>
-<h3 id='debugging-only' class='heading'>⚠️ Debugging Only!</h3>
+<p>If you want to <em>always</em> have them available, create a symbolic breakpoint in <code>UIApplicationMain</code>, enter <code>lldo</code> as <em>Debugger Command</em> and check the <em>Automatically Continue</em> checkbox. You might even right click that breakpoint and move it to your user so it&rsquo;s automatically available in all your projects.</p>
+<h3 id='objective-c-only-projects-on-a-device' class='heading'>⚠️ Objective-C Only Projects on a Device</h3>
 
-<p>This purpose of this code is <strong>only</strong> to make debugging and development easier. 
-Do <strong>NOT</strong> include it in your releases.</p>
+<p>To be able to use the Swift helpers in an Objective-C only project on a device, you need to bundle the necessary Swift runtime libraries:</p>
+
+<ol>
+<li>Add a single Swift file</li>
+<li>Do <strong>not</strong> create a bridging header</li>
+<li>make sure you <code>import UIKit</code></li>
+</ol>
+
+<p>See <code>(lldb) help load_swift_runtime</code> for details.</p>
+<h2 id='documentation' class='heading'>Documentation</h2>
+<h3 id='swift-helpers' class='heading'>Swift Helpers</h3>
+
+<p>The documentation of the Swift helpers lives at <a href="https://lurado.github.io/LLDO">lurado.github.io/LLDO</a>.</p>
 <h3 id='lldb-commands' class='heading'>LLDB Commands</h3>
-<h4 id='handy-aliases' class='heading'>Handy Aliases</h4>
+<h4 id='aliases' class='heading'>Aliases</h4>
 
-<p>TODO: transfer list from <code>__init__.py</code></p>
+<table><thead>
+<tr>
+<th>Alias</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>ps</code></td>
+<td>Like <code>po</code> but always use Swift. <em>Very</em> handy when using the Swift helpers in an Objective-C project.</td>
+</tr>
+<tr>
+<td><code>alias</code></td>
+<td>Create a LLDB command alias: <code>alias &lt;name&gt; &lt;command&gt;</code>.</td>
+</tr>
+<tr>
+<td><code>history</code></td>
+<td>Shows the LLDB command history. Like the Bash command.</td>
+</tr>
+<tr>
+<td><code>import</code></td>
+<td>Load a Python script: <code>import &lt;/path/to/script.py&gt;</code>.</td>
+</tr>
+<tr>
+<td><code>shell</code></td>
+<td>Execute a shell command, e.g. <code>shell ls -la</code>.</td>
+</tr>
+<tr>
+<td><code>reload_lldbinit</code></td>
+<td>What it says on the tin. Very handy when developing commands.</td>
+</tr>
+</tbody></table>
 <h4 id='commands' class='heading'>Commands</h4>
 
 <table><thead>
@@ -100,66 +157,57 @@ Do <strong>NOT</strong> include it in your releases.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td>load_image</td>
-<td>Loads an image from your local hard drive into the process</td>
+<td><code>lldo</code></td>
+<td>Load the Swift helpers.</td>
 </tr>
 <tr>
-<td>proofimage</td>
-<td>Display an image from your local hard drive as fullscreen overlay</td>
+<td><code>load_swift</code></td>
+<td>Load a Swift source code file.</td>
+</tr>
+<tr>
+<td><code>load_swift_runtime</code></td>
+<td>Load the Swift runtime. Necessary in Objective-C only projects.</td>
+</tr>
+<tr>
+<td><code>load_image</code></td>
+<td>Creates an <code>UIImage</code> from a file on your local hard drive.</td>
+</tr>
+<tr>
+<td><code>proofimage</code></td>
+<td>Displays an image from your local hard drive as semi-transparent fullscreen overlay to compare your layout with a reference design.</td>
 </tr>
 </tbody></table>
-<h3 id='swift-helper' class='heading'>Swift Helper</h3>
 
-<p>While LLDB commands are nice, helpers in real code are way more powerful, convenient, easier to write, test and maintain.</p>
-
-<p>TODO:</p>
-
-<ul>
-<li>Examples</li>
-<li>How to Extend
-
-<ul>
-<li>develop extensions in Xcode, save to a file</li>
-<li>call <code>load_swift &lt;path&gt;</code> to your own file)</li>
-</ul></li>
-</ul>
-<h4 id='usage' class='heading'>Usage</h4>
-
-<p>While in LLDB type <code>lldo</code> to make the helpers available. 
-If you find yourself doing it in every session, you can also create a symbolic breakpoint in <code>UIApplicationMain</code>, enter <code>lldo</code> as &lsquo;Debugger Command&rsquo; and check the &lsquo;Automatically Continue&rsquo; checkbox.
-You might even right click that breakpoint and move it to your user so it&rsquo;s available in all your projects.</p>
-
-<p>⚠️ ObjC Only Projects on a Device</p>
-
-<p>To be able to use the Swift helpers in an ObjC only project on a device, you need to bundle the Swift runtime:</p>
-
-<ul>
-<li>Add a single Swift file</li>
-<li>Do <strong>not</strong> create a bridging header</li>
-<li>make sure you <code>import UIKit</code></li>
-</ul>
-
-<p>TODO: See #??? for details</p>
-<h4 id='how-it-works' class='heading'>How it Works</h4>
-
-<p>TODO:</p>
-
-<ul>
-<li>reference video (<a href="https://www.youtube.com/watch?v=9Io2_W1iDLQ">https://www.youtube.com/watch?v=9Io2_W1iDLQ</a>)</li>
-<li>rough rundown</li>
-</ul>
-<h2 id='development' class='heading'>Development</h2>
+<p>Use the built in <code>help</code> command for further details, e.g. <code>(lldb) help load_image</code>.</p>
+<h2 id='write-your-own' class='heading'>Write Your Own</h2>
+<h3 id='swift-helpers' class='heading'>Swift Helpers</h3>
 
 <ol>
-<li><code>reload_lldbinit</code></li>
-<li>run command</li>
-<li>GOTO 1</li>
+<li>Develop them like any other code in a Xcode project</li>
+<li>Run an application and pause it to start LLDB</li>
+<li>Use the <a href="#commands"><code>load_swift</code> command</a> to load the code</li>
+<li>Run your code</li>
+<li>GOTO 1 (unfortunately loading a files twice in a LLDB session results in duplicate symbols)</li>
 </ol>
-<h2 id='other-lldb-nuggets' class='heading'>Other LLDB Nuggets</h2>
+<h3 id='lldb-commands' class='heading'>LLDB commands</h3>
+
+<ol>
+<li>Create a Python script containing the command code</li>
+<li>Use the <a href="#aliases"><code>import</code> alias</a> in your <code>.lldbinit</code> to activate it</li>
+<li>Run an application and pause it to start LLDB</li>
+<li><code>reload_lldbinit</code></li>
+<li>Run your command</li>
+<li>Modify as needed</li>
+<li>GOTO 4 (reloading and re-defining commands in a LLDB session works just fine)</li>
+</ol>
+<h2 id='debugging-only' class='heading'>⚠️ Debugging Only!</h2>
+
+<p>This purpose of this project is <strong>only</strong> to make debugging and development easier. 
+Do <strong>NOT</strong> include it in your releases.</p>
+<h2 id='random-lldb-tidbits' class='heading'>Random LLDB Tidbits</h2>
 
 <ul>
 <li>Check out <a href="https://github.com/facebook/chisel">Chisel</a></li>
-<li>use <code>call</code> instead of <code>expr[ession]</code></li>
 <li>use <code>j[ump] +N</code> instead of <code>thread jump --by N</code></li>
 </ul>
 <h2 id='license' class='heading'>LICENSE</h2>
@@ -169,7 +217,7 @@ You might even right click that breakpoint and move it to your user so it&rsquo;
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="https://lurado.com" target="_blank" rel="external">Julian Raschke und Sebastian Ludwig GbR</a>. All rights reserved. (Last updated: 2019-03-01)</p>
+          <p>&copy; 2019 <a class="link" href="https://lurado.com" target="_blank" rel="external">Julian Raschke und Sebastian Ludwig GbR</a>. All rights reserved. (Last updated: 2019-03-02)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

@@ -1,96 +1,138 @@
-# TODO
-- publish (LLDO - Lurado LLDB helpers)
-- Documentation
-  - Rework README
-- create issue: breakpoints.py
-  - https://gist.github.com/kastiglione/d7fc5b3b3ebab1248333b858591e06b0#file-lldbinit
-  - https://youtu.be/9Io2_W1iDLQ?t=1250
-  - https://github.com/kastiglione/lldb-helpers
-  - https://www.dropbox.com/s/9sv67e7f2repbpb/lldb-commands-map.png?dl=0
-  -> create bif => breakpoint if/condition (-F -> lldb-helpers)
-  -> create baction => breakpoint action (-o -> youtube)
-  -> add docu on how to write scripts
+
+# 🐲 LLDO - LLDB helpers by Lurado
+
+## Motivation
+
+While LLDB commands are nice, helpers in Swift are _way_ more convenient, easier to write, test and maintain.
+
+This project has been heavily inspired by [@kastiglione](https://twitter.com/kastiglione). You should check out his [talk](https://www.youtube.com/watch?v=9Io2_W1iDLQ).
 
 
-# LLDO - LLDB helpers by Lurado
+## Try It
 
-Heavily inspired by [kastiglione](https://gist.github.com/kastiglione/d7fc5b3b3ebab1248333b858591e06b0), you should check out his [talk](https://www.youtube.com/watch?v=9Io2_W1iDLQ).
+1. Clone this repo
+2. Open the `LLDOSwiftHelper.xcodeproj` Xcode project
+3. Set a breakpoint in `AppDelegate.applicationDidBecomeActive
+4. Run in the Simulator
+5. Start messing around. For example
+
+```
+# Highlights
+po UIView.current.highlightLayoutMargins(depth: 2)
+po UIView.current.highlightLayoutMargins(false, depth: .max)
+
+# Poking around
+po UIButton.first()
+po UIView.current.all(UILabel.self)
+po UIView.grep("Pass")
+po UIView.find(byAccessibilityID: "username_input")
+po UIView.current.tree().filter { $0.isHidden }
+
+# Changing stuff
+po UITextField.first()?.enterText("lldo@lurado.com")
+po UISwitch.first()?.slide()
+po UIButton.first()?.tap()
+# you can build powerful automations with this - see below
+
+# For the rest we need additional LLDO's LLDB commands
+# Hint: You can use drag and drop the path from Finder 📎
+command script import </path/to>/LLDO
+
+# Load a reference design to check for abberations
+proofimage </path/to>/LLDO/LLDOSwiftHelper/demo_reference.png
+po UIImageView.at(<memory address>).removeFromSuperview()
+# OR
+po UIView.root.overlay()
+```
+
 
 ## Installation
 
-Clone this repo and add 
+Add the following line to your `~/.lldbinit`:
 
 ```
 command script import /path/to/LLDO
 ```
 
-to your `~/.lldbinit`
+This loads LLDO's LLDB commands by default and makes them available in every project. Whenever you are in LLDB you can type `lldo` to load the Swift helper methods.
 
-## Usage
+If you want to _always_ have them available, create a symbolic breakpoint in `UIApplicationMain`, enter `lldo` as _Debugger Command_ and check the _Automatically Continue_ checkbox. You might even right click that breakpoint and move it to your user so it's automatically available in all your projects.
 
-TODO: how to try it out: run example Project (does not really work :-/ -> need to break in a Swift frame)
 
-### ⚠️ Debugging Only!
+### ⚠️ Objective-C Only Projects on a Device
 
-This purpose of this code is **only** to make debugging and development easier. 
-Do **NOT** include it in your releases.
+To be able to use the Swift helpers in an Objective-C only project on a device, you need to bundle the necessary Swift runtime libraries:
+
+1. Add a single Swift file
+1. Do **not** create a bridging header
+1. make sure you `import UIKit`
+
+See `(lldb) help load_swift_runtime` for details.
+
+
+## Documentation
+
+### Swift Helpers
+
+The documentation of the Swift helpers lives at [lurado.github.io/LLDO](https://lurado.github.io/LLDO).
 
 ### LLDB Commands
+#### Aliases
 
-#### Handy Aliases
-
-TODO: transfer list from `__init__.py`
+| Alias | Description|
+|-------|------------|
+| `ps` | Like `po` but always use Swift. _Very_ handy when using the Swift helpers in an Objective-C project. |
+| `alias` | Create a LLDB command alias: `alias <name> <command>`. |
+| `history` | Shows the LLDB command history. Like the Bash command. |
+| `import` | Load a Python script: `import </path/to/script.py>`. |
+| `shell` | Execute a shell command, e.g. `shell ls -la`. |
+| `reload_lldbinit` | What it says on the tin. Very handy when developing commands. |
 
 #### Commands
 
 | Command | Description |
 |---------|-------------|
-| load_image | Loads an image from your local hard drive into the process |
-| proofimage | Display an image from your local hard drive as fullscreen overlay |
+| `lldo` | Load the Swift helpers. |
+| `load_swift` | Load a Swift source code file. |
+| `load_swift_runtime` | Load the Swift runtime. Necessary in Objective-C only projects. |
+| `load_image` | Creates an `UIImage` from a file on your local hard drive. |
+| `proofimage` | Displays an image from your local hard drive as semi-transparent fullscreen overlay to compare your layout with a reference design. |
 
-### Swift Helper
+Use the built in `help` command for further details, e.g. `(lldb) help load_image`.
 
-While LLDB commands are nice, helpers in real code are way more powerful, convenient, easier to write, test and maintain.
 
-TODO:
-  - Examples
-  - How to Extend
-    - develop extensions in Xcode, save to a file
-    - call `load_swift <path>` to your own file)
+## Write Your Own
 
-#### Usage
+### Swift Helpers
 
-While in LLDB type `lldo` to make the helpers available. 
-If you find yourself doing it in every session, you can also create a symbolic breakpoint in `UIApplicationMain`, enter `lldo` as 'Debugger Command' and check the 'Automatically Continue' checkbox.
-You might even right click that breakpoint and move it to your user so it's available in all your projects.
+1. Develop them like any other code in a Xcode project
+1. Run an application and pause it to start LLDB
+1. Use the [`load_swift` command](#commands) to load the code
+1. Run your code
+1. GOTO 1 (unfortunately loading a files twice in a LLDB session results in duplicate symbols)
 
-⚠️ ObjC Only Projects on a Device
+### LLDB commands
 
-To be able to use the Swift helpers in an ObjC only project on a device, you need to bundle the Swift runtime:
-
-  - Add a single Swift file
-  - Do **not** create a bridging header
-  - make sure you `import UIKit`
-
-TODO: See #??? for details
-
-#### How it Works 
-
-TODO:
-  - reference video (https://www.youtube.com/watch?v=9Io2_W1iDLQ)
-  - rough rundown
-
-## Development
-
+1. Create a Python script containing the command code
+1. Use the [`import` alias](#aliases) in your `.lldbinit` to activate it
+1. Run an application and pause it to start LLDB
 1. `reload_lldbinit`
-1. run command
-1. GOTO 1
+1. Run your command
+1. Modify as needed
+1. GOTO 4 (reloading and re-defining commands in a LLDB session works just fine)
 
-## Other LLDB Nuggets
+
+## ⚠️ Debugging Only!
+
+This purpose of this project is **only** to make debugging and development easier. 
+Do **NOT** include it in your releases.
+
+
+## Random LLDB Tidbits
 
 - Check out [Chisel](https://github.com/facebook/chisel)
-- use `call` instead of `expr[ession]`
 - use `j[ump] +N` instead of `thread jump --by N`
+
 
 ## LICENSE
 

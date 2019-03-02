@@ -258,7 +258,7 @@ extension UIView {
      #### Example
      
      ```
-     po UITextField.first()?.enterText("info@lurado.com")
+     po UITextField.first()?.enterText("lldo@lurado.com")
      ```
      */
     @objc func enterText(_ text: String) {
@@ -475,10 +475,10 @@ extension UIView {
      Displays a semi transparent image on top of the receiver to be able to visually compare it to a reference design.
      
      An `UIImageView` displaying the image will be created and added as a subview.
-     It will be semi transparent so any discrepancies are easy to spot.
+     It will be semi transparent so any differences are easy to spot.
      The content mode is set to `.scaleAspectFit` to avoid deformations.
      
-     - Parameter image: Image to overlay
+     - Parameter image: Image to overlay. Pass `nil` to remove the overlay.
      - Returns: The created `UIImageView`
      - Remark: This method unfolds its real utility within the `proofimage` LLDB command.
      
@@ -488,14 +488,22 @@ extension UIView {
      po UIView.current.overlay(UIImage(named: "reference.png"))
      ```
      */
-    @objc func overlay(_ image: UIImage) -> UIImageView {
+    @objc func overlay(_ image: UIImage? = nil) -> UIImageView? {
+        defer { caflush() }
+        
+        let layerName = "proofimage"
+        
+        layer.sublayers?.filter { $0.name == layerName }.forEach { $0.removeFromSuperlayer() }
+        
+        guard let image = image else { return nil }
+        
         let imageView = UIImageView(image: image)
+        imageView.layer.name = layerName
         imageView.alpha = 0.3
         imageView.frame = bounds
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageView)
-        caflush()
         return imageView
     }
 }

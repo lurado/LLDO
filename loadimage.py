@@ -50,7 +50,7 @@ def transfer_image(path, process, result):
 
 def load_image(debugger, args, ctx, result, _):
   """
-  Creates an `UIImage` from a file on the host.
+  Creates an `UIImage` from a file on your local hard drive.
 
   Usage: load_image </path/to/image.png>
 
@@ -70,7 +70,9 @@ def load_image(debugger, args, ctx, result, _):
 
 def proofimage(debugger, args, ctx, result, _):
   """
-  Loads an image and adds it as overlay to the root view.
+  Displays an image from your local hard drive as semi-transparent fullscreen overlay.
+
+  Makes it easy to spot differences to a referece design.
 
   Usage: proofimage </path/to/image.png>
   """
