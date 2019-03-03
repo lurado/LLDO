@@ -8,7 +8,7 @@ def __lldb_init_module(debugger, internal_dict):
     proofimage
   ]
   for function in commands:
-    function.__doc__ = re.sub(r"([^\n])\n([^\n])", "\1 \2", textwrap.dedent(function.__doc__))
+    function.__doc__ = re.sub("([^\n])\n([^\n])", "\g<1> \g<2>", textwrap.dedent(function.__doc__))
     debugger.HandleCommand("command script add -f {0}.{1} {1}".format(__name__, function.__name__))
 
 
