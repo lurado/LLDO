@@ -12,18 +12,20 @@ def run(command):
 
 
 # define handy aliases
-run('command alias alias command alias')  # define an alias called `alias` that can be used to define an alias
-run('alias reload_lldbinit command source ~/.lldbinit')
-run('alias history command history')
-run('alias import command script import')
-run('alias shell platform shell')
+run("command alias alias command alias")  # define an alias called `alias` that can be used to define an alias
+run("alias reload_lldbinit command source ~/.lldbinit")
+run("alias history command history")
+run("alias import command script import")
+run("alias shell platform shell")
 
-run('alias ps expression -O -l Swift --')   # like po but use Swift
+run("alias ps expression -O -l Swift --")   # like po but use Swift
 
 # TODO: (re)set target language
 
-# Swift helper
-run('import %s' % rel_path_to('swift_helper/load_swift.py'))
+scripts = [
+  "swift_helper/load_swift.py",
+  "loadimage.py",
+]
 
-# proofimage command
-run('import %s' % rel_path_to('loadimage.py'))
+for script in scripts:
+  run("import %s" % rel_path_to(script))
