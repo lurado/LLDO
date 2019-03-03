@@ -58,10 +58,9 @@
 
 <ol>
 <li>Clone this repo</li>
-<li>Open the <code>LLDOSwiftHelper.xcodeproj</code> Xcode project</li>
-<li>Set a breakpoint in `AppDelegate.applicationDidBecomeActive</li>
-<li>Run in the Simulator</li>
-<li>Start messing around. For example</li>
+<li>Open the <code>LLDOSwiftHelper.xcodeproj</code> Xcode project.</li>
+<li>Run in the Simulator and wait to hit the breakpoint in <code>AppDelegate.applicationDidBecomeActive</code>.</li>
+<li>Start messing around. For example:</li>
 </ol>
 <pre class="highlight plaintext"><code># Highlights
 po UIView.current.highlightLayoutMargins(depth: 2)
@@ -75,10 +74,13 @@ po UIView.find(byAccessibilityID: "username_input")
 po UIView.current.tree().filter { $0.isHidden }
 
 # Changing stuff
-po UITextField.first()?.enterText("lldo@lurado.com")
+po UITextField.first()?.enterText("mail@company.com")
 po UISwitch.first()?.slide()
 po UIButton.first()?.tap()
-# you can build powerful automations with this - see below
+
+# Automation
+load_actions lldb_actions/
+login
 
 # For the rest we need additional LLDO's LLDB commands
 # Hint: You can use drag and drop the path from Finder 📎
@@ -98,7 +100,7 @@ po UIView.root.overlay()
 
 <p>This loads LLDO&rsquo;s LLDB commands by default and makes them available in every project. Whenever you are in LLDB you can type <code>lldo</code> to load the Swift helper methods.</p>
 
-<p>If you want to <em>always</em> have them available, create a symbolic breakpoint in <code>UIApplicationMain</code>, enter <code>lldo</code> as <em>Debugger Command</em> and check the <em>Automatically Continue</em> checkbox. You might even right click that breakpoint and move it to your user so it&rsquo;s automatically available in all your projects.</p>
+<p>If you want to <em>always</em> have them available, create a symbolic breakpoint in <code>UIApplicationMain</code>, enter <code>lldo</code> as <em>Debugger Command</em> and check the <em>Automatically continue</em> checkbox. You might even right click that breakpoint and move it to your user so it&rsquo;s automatically available in all your projects.</p>
 <h3 id='objective-c-only-projects-on-a-device' class='heading'>⚠️ Objective-C Only Projects on a Device</h3>
 
 <p>To be able to use the Swift helpers in an Objective-C only project on a device, you need to bundle the necessary Swift runtime libraries:</p>
@@ -125,7 +127,7 @@ po UIView.root.overlay()
 </thead><tbody>
 <tr>
 <td><code>ps</code></td>
-<td>Like <code>po</code> but always use Swift. <em>Very</em> handy when using the Swift helpers in an Objective-C project.</td>
+<td>Like <code>po</code> but always use Swift. <em>Very</em> handy when using the Swift helpers in an Objective-C context.</td>
 </tr>
 <tr>
 <td><code>alias</code></td>
@@ -169,24 +171,63 @@ po UIView.root.overlay()
 <td>Load the Swift runtime. Necessary in Objective-C only projects.</td>
 </tr>
 <tr>
+<td><code>load_actions</code></td>
+<td>Loads LLDB scripts from a folder: <code>load_actions &lt;path&gt;</code></td>
+</tr>
+<tr>
 <td><code>load_image</code></td>
-<td>Creates an <code>UIImage</code> from a file on your local hard drive.</td>
+<td>Creates an <code>UIImage</code> from a file on your local hard drive: <code>load_image &lt;/path/to/image&gt;</code></td>
 </tr>
 <tr>
 <td><code>proofimage</code></td>
-<td>Displays an image from your local hard drive as semi-transparent fullscreen overlay to compare your layout with a reference design.</td>
+<td>Displays an image from your local hard drive as semi-transparent fullscreen overlay to compare your layout with a reference design: <code>proofimage &lt;/path/to/image&gt;</code></td>
+</tr>
+<tr>
+<td><code>psource_folder</code></td>
+<td>Prints the source folder path of the current breakpoint.</td>
 </tr>
 </tbody></table>
 
 <p>Use the built in <code>help</code> command for further details, e.g. <code>(lldb) help load_image</code>.</p>
+<h2 id='automation' class='heading'>Automation</h2>
+
+<p>The Swift Helpers and LLDB commands can be combined into little, powerful scripts to automate tasks you do repeatedly.
+For example you can create UI automations to, say, log you in or bring your app into a specific state.</p>
+
+<p>To create a script just put a sequence of LLDB commands in a <code>.lldb</code> file call <code>load_actions &lt;path&gt;</code> with the folder path containing the file. <code>load_actions</code> will automatically load all <code>.lldb</code> files in that folder and create actions base on their filenames: A <code>login.lldb</code> will result in a <code>login</code> action.</p>
+
+<p>The <code>&lt;path&gt;</code> parameter for <code>load_actions</code> may be relative. However, in order for that to work, the breakpoint at which the application is stopped must be in the application source. Just hitting the pause icon and trying to use a relative path won&rsquo;t work.</p>
+
+<p>If you want to share actions with your team <em>and</em> always have them available, you need to create a shared symbolic breakpoint in your application that loads the actions with a relative path:</p>
+
+<ol>
+<li>Create a symbolic breakpoint
+
+<ul>
+<li>For Swift projects:
+
+<ul>
+<li>Symbol: <code>@objc &lt;module&gt;.&lt;AppDelegate&gt;.init</code>, e.g. (<code>@objc LLDO.AppDelegate.init</code>)</li>
+</ul></li>
+<li>For Objective-C projects:
+
+<ul>
+<li>Symbol: <code>main</code></li>
+<li>Module: <code>&lt;module&gt;</code>, e.g. (<code>LLDO</code>)</li>
+</ul></li>
+</ul></li>
+<li>Add a <em>Debugger Command</em> action: <code>load_actions &lt;relative/path&gt;</code>, e.g. <code>load_actions LLDOSwiftHelper/lldb_actions</code></li>
+<li>Check <em>Automatically continue</em></li>
+<li>Right click the created breakpoint and select <em>Share</em></li>
+</ol>
 <h2 id='write-your-own' class='heading'>Write Your Own</h2>
 <h3 id='swift-helpers' class='heading'>Swift Helpers</h3>
 
 <ol>
 <li>Develop them like any other code in a Xcode project</li>
 <li>Run an application and pause it to start LLDB</li>
-<li>Use the <a href="#commands"><code>load_swift</code> command</a> to load the code</li>
-<li>Run your code</li>
+<li>Use the <a href="#commands"><code>load_swift</code> command</a> to load the file</li>
+<li>Call your helpers</li>
 <li>GOTO 1 (unfortunately loading a files twice in a LLDB session results in duplicate symbols)</li>
 </ol>
 <h3 id='lldb-commands' class='heading'>LLDB commands</h3>
@@ -217,7 +258,7 @@ Do <strong>NOT</strong> include it in your releases.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="https://lurado.com" target="_blank" rel="external">Julian Raschke und Sebastian Ludwig GbR</a>. All rights reserved. (Last updated: 2019-03-02)</p>
+          <p>&copy; 2019 <a class="link" href="https://lurado.com" target="_blank" rel="external">Julian Raschke und Sebastian Ludwig GbR</a>. All rights reserved. (Last updated: 2019-03-03)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
