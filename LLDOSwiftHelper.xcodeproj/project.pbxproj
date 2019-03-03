@@ -28,6 +28,7 @@
 		9EB2ADEA2223251C003341F8 /* UIView+LLDO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LLDO.swift"; sourceTree = "<group>"; };
 		9EB2ADEB2223251C003341F8 /* load_swift.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = load_swift.py; sourceTree = "<group>"; };
 		9EB2ADEC2223251C003341F8 /* UIViewController+LLDO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+LLDO.swift"; sourceTree = "<group>"; };
+		9EC824E6222ADFC5009806AC /* login.lldb */ = {isa = PBXFileReference; lastKnownFileType = text; path = login.lldb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +61,7 @@
 		9EB2ADC722232252003341F8 /* LLDOSwiftHelper */ = {
 			isa = PBXGroup;
 			children = (
+				9EC824E5222ADF92009806AC /* lldb_actions */,
 				9EB2ADE92223251C003341F8 /* swift_helper */,
 				9EB2ADC822232252003341F8 /* AppDelegate.swift */,
 				9EB2ADCC22232252003341F8 /* Main.storyboard */,
@@ -80,6 +82,14 @@
 			);
 			path = swift_helper;
 			sourceTree = SOURCE_ROOT;
+		};
+		9EC824E5222ADF92009806AC /* lldb_actions */ = {
+			isa = PBXGroup;
+			children = (
+				9EC824E6222ADFC5009806AC /* login.lldb */,
+			);
+			path = lldb_actions;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 

@@ -25,6 +25,7 @@ run("alias ps expression -O -l Swift --")   # like po but use Swift
 scripts = [
   "swift_helper/load_swift.py",
   "loadimage.py",
+  "automation.py"
 ]
 
 for script in scripts:
