@@ -19,11 +19,11 @@ def command_options():
 
 def transfer_image(path, process, result):
   """
-  Transfers an image from the host to the debugged process.
+  Transfers an image from the host to the process being debugged.
 
   The image at the given path is read from the host, 
-  the data is transferred into the debugged process
-  and an `UIImage` is created. 
+  the data is transferred into the process being debugged
+  and a `UIImage` is created. 
 
   Returns the memory address of the created `UIImage`.
   """
@@ -50,14 +50,14 @@ def transfer_image(path, process, result):
 
 def load_image(debugger, args, ctx, result, _):
   """
-  Creates an `UIImage` from a file on your local hard drive.
+  Creates a `UIImage` from a file on your local hard drive.
 
   Usage: load_image </path/to/image.png>
 
-  Loads the image at the given path into the debugged process and creates an `UIImage`.
+  Loads the image at the given path into the process being debugged and creates a `UIImage`.
   This instance is assigned to a LLDB variable (e.g. `$3`) a that can be used freely.
   Unfortunately LLDB variables can't be used in Swift expressions (see https://stackoverflow.com/a/40267006/588314 for details).
-  As a workaround the object at the memory address can be casted into an `UIImage` with `UIImage.at(<memory address>)`.
+  As a workaround the object at the memory address can be cast into a `UIImage` with `UIImage.at(<memory address>)`.
   """
   imagePath = args
 

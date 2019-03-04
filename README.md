@@ -98,7 +98,7 @@ The documentation of the Swift helpers lives at [lurado.github.io/LLDO](https://
 | `load_swift` | Load a Swift source code file. |
 | `load_swift_runtime` | Load the Swift runtime. Necessary in Objective-C only projects. |
 | `load_actions` | Loads LLDB scripts from a folder: `load_actions <path>` |
-| `load_image` | Creates an `UIImage` from a file on your local hard drive: `load_image </path/to/image>` |
+| `load_image` | Creates a `UIImage` from a file on your local hard drive: `load_image </path/to/image>` |
 | `proofimage` | Displays an image from your local hard drive as semi-transparent fullscreen overlay to compare your layout with a reference design: `proofimage </path/to/image>` |
 | `psource_folder` | Prints the source folder path of the current breakpoint. |
 

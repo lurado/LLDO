@@ -12,7 +12,7 @@ extension NSObject {
     /**
      Much nicer to type than `unsafeBitCast(, to:)`
      
-     Returns the object at the given memory address casted to the type the method is called on.
+     Returns the object at the given memory address cast to the type the method is called on.
      
      #### Example
      ```
