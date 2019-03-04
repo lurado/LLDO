@@ -164,7 +164,7 @@ po UIView.root.overlay()
 </tr>
 <tr>
 <td><code>load_swift</code></td>
-<td>Load a Swift source code file.</td>
+<td>Load a Swift source code file: <code>load_swift &lt;path&gt;</code></td>
 </tr>
 <tr>
 <td><code>load_swift_runtime</code></td>
@@ -194,9 +194,13 @@ po UIView.root.overlay()
 <p>The Swift Helpers and LLDB commands can be combined into little, powerful scripts to automate tasks you do repeatedly.
 For example you can create UI automations to, say, log you in or bring your app into a specific state.</p>
 
-<p>To create a script just put a sequence of LLDB commands in a <code>.lldb</code> file call <code>load_actions &lt;path&gt;</code> with the folder path containing the file. <code>load_actions</code> will automatically load all <code>.lldb</code> files in that folder and create actions base on their filenames: A <code>login.lldb</code> will result in a <code>login</code> action.</p>
+<p>To create a script just put a sequence of LLDB commands in a <code>.lldb</code> file and call <code>load_actions &lt;path&gt;</code> with the folder path containing the file.
+<code>load_actions</code> will automatically load all <code>.lldb</code> files in that folder and create actions base on their filenames: 
+A <code>login.lldb</code> will result in a <code>login</code> action.</p>
 
-<p>The <code>&lt;path&gt;</code> parameter for <code>load_actions</code> may be relative. However, in order for that to work, the breakpoint at which the application is stopped must be in the application source. Just hitting the pause icon and trying to use a relative path won&rsquo;t work.</p>
+<p>The <code>&lt;path&gt;</code> parameter for <code>load_actions</code> may be relative. 
+However, in order for that to work, the breakpoint at which the application is stopped must be in the application source. 
+ Just hitting the pause icon and trying to use a relative path won&rsquo;t work.</p>
 
 <p>If you want to share actions with your team <em>and</em> always have them available, you need to create a shared symbolic breakpoint in your application that loads the actions with a relative path:</p>
 

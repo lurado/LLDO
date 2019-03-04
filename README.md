@@ -95,7 +95,7 @@ The documentation of the Swift helpers lives at [lurado.github.io/LLDO](https://
 | Command | Description |
 |---------|-------------|
 | `lldo` | Load the Swift helpers. |
-| `load_swift` | Load a Swift source code file. |
+| `load_swift` | Load a Swift source code file: `load_swift <path>` |
 | `load_swift_runtime` | Load the Swift runtime. Necessary in Objective-C only projects. |
 | `load_actions` | Loads LLDB scripts from a folder: `load_actions <path>` |
 | `load_image` | Creates a `UIImage` from a file on your local hard drive: `load_image </path/to/image>` |
@@ -109,9 +109,13 @@ Use the built in `help` command for further details, e.g. `(lldb) help load_imag
 The Swift Helpers and LLDB commands can be combined into little, powerful scripts to automate tasks you do repeatedly.
 For example you can create UI automations to, say, log you in or bring your app into a specific state.
 
-To create a script just put a sequence of LLDB commands in a `.lldb` file call `load_actions <path>` with the folder path containing the file. `load_actions` will automatically load all `.lldb` files in that folder and create actions base on their filenames: A `login.lldb` will result in a `login` action.
+To create a script just put a sequence of LLDB commands in a `.lldb` file and call `load_actions <path>` with the folder path containing the file.
+`load_actions` will automatically load all `.lldb` files in that folder and create actions base on their filenames: 
+A `login.lldb` will result in a `login` action.
 
-The `<path>` parameter for `load_actions` may be relative. However, in order for that to work, the breakpoint at which the application is stopped must be in the application source. Just hitting the pause icon and trying to use a relative path won't work.
+The `<path>` parameter for `load_actions` may be relative. 
+However, in order for that to work, the breakpoint at which the application is stopped must be in the application source. 
+ Just hitting the pause icon and trying to use a relative path won't work.
 
 If you want to share actions with your team _and_ always have them available, you need to create a shared symbolic breakpoint in your application that loads the actions with a relative path:
 
