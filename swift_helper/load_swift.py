@@ -94,7 +94,7 @@ def load_swift_runtime(debugger, args, ctx, result, _):
   Attention: Only works in the Simulator!
 
   To our knowledge it's not possible to transfer a library onto the device and load it from there.
-  That means pure Objective-C apps need to add a single unuses Swift file, to bundle the Swift runtime into the app.
+  That means pure Objective-C apps need to add a single unused Swift file, to bundle the Swift runtime into the app.
   It will then be auto loaded during startup.
   """
 

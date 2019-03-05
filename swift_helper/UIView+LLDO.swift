@@ -148,6 +148,8 @@ extension UIView {
      If any of these attributes contains the passed text, the method will return `true`.
      All other cases will return `false`.
      
+     - Parameter pattern: Regex pattern that must be matched.
+     
      #### Example
      
      ```
@@ -155,7 +157,9 @@ extension UIView {
      ```
      */
     @objc func containsText(_ pattern: String) -> Bool {
-        let check = { (text: String?) in return text?.range(of: pattern) != nil }
+        let check = { (text: String?) in
+            return text == nil ? false : try! NSRegularExpression(pattern: pattern).firstMatch(in: text!, options: [], range: NSRange(location: 0, length: text!.utf16.count)) != nil
+        }
         if let label = self as? UILabel {
             return check(label.text)
         } else if let textField = self as? UITextField {
@@ -174,6 +178,7 @@ extension UIView {
      
      Traverses the view hierarchy starting at the receiver and returns all views whose `containsText(_:)` check returns `true`.
      
+     - Parameter pattern: Regex pattern that must be matched.
      - Remark: The labels of `UIButtons` will be excluded.
      - SeeAlso: `containsText(_:)`
      
