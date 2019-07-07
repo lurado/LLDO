@@ -1,6 +1,6 @@
 task :default => [:docs]
 
-desc "Generate documentation"
+desc "Generate documentation. Be sure to temporarily add the `+LLDO.swift` files to the target."
 task :docs do
     Dir.chdir "Example" do
         `jazzy \
