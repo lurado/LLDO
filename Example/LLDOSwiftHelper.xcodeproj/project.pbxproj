@@ -7,28 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9E1977802226A9440068CDB1 /* NSObject+LLDO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E19777F2226A9440068CDB1 /* NSObject+LLDO.swift */; };
 		9EB2ADC922232252003341F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB2ADC822232252003341F8 /* AppDelegate.swift */; };
 		9EB2ADCE22232252003341F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EB2ADCC22232252003341F8 /* Main.storyboard */; };
 		9EB2ADD022232253003341F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EB2ADCF22232253003341F8 /* Assets.xcassets */; };
 		9EB2ADD322232253003341F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EB2ADD122232253003341F8 /* LaunchScreen.storyboard */; };
-		9EB2ADED2223251C003341F8 /* UIView+LLDO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB2ADEA2223251C003341F8 /* UIView+LLDO.swift */; };
-		9EB2ADEE2223251C003341F8 /* load_swift.py in Resources */ = {isa = PBXBuildFile; fileRef = 9EB2ADEB2223251C003341F8 /* load_swift.py */; };
-		9EB2ADEF2223251C003341F8 /* UIViewController+LLDO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB2ADEC2223251C003341F8 /* UIViewController+LLDO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9E19777F2226A9440068CDB1 /* NSObject+LLDO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+LLDO.swift"; sourceTree = "<group>"; };
+		9E065F8122BFB50A006F8A1D /* login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = login.swift; sourceTree = "<group>"; };
+		9E065F8A22BFC611006F8A1D /* NSObject+LLDO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+LLDO.swift"; sourceTree = "<group>"; };
+		9E065F8B22BFC611006F8A1D /* UIViewController+LLDO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+LLDO.swift"; sourceTree = "<group>"; };
+		9E065F8C22BFC611006F8A1D /* UIView+LLDO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LLDO.swift"; sourceTree = "<group>"; };
 		9EB2ADC522232252003341F8 /* LLDO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LLDO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EB2ADC822232252003341F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9EB2ADCD22232252003341F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9EB2ADCF22232253003341F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9EB2ADD222232253003341F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9EB2ADD422232253003341F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9EB2ADEA2223251C003341F8 /* UIView+LLDO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LLDO.swift"; sourceTree = "<group>"; };
-		9EB2ADEB2223251C003341F8 /* load_swift.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = load_swift.py; sourceTree = "<group>"; };
-		9EB2ADEC2223251C003341F8 /* UIViewController+LLDO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+LLDO.swift"; sourceTree = "<group>"; };
-		9EC824E6222ADFC5009806AC /* login.lldb */ = {isa = PBXFileReference; lastKnownFileType = text; path = login.lldb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,9 +37,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9E065F8922BFC611006F8A1D /* lldo_helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9E065F8A22BFC611006F8A1D /* NSObject+LLDO.swift */,
+				9E065F8B22BFC611006F8A1D /* UIViewController+LLDO.swift */,
+				9E065F8C22BFC611006F8A1D /* UIView+LLDO.swift */,
+			);
+			name = lldo_helpers;
+			path = ../lldo_helpers;
+			sourceTree = "<group>";
+		};
 		9EB2ADBC22232252003341F8 = {
 			isa = PBXGroup;
 			children = (
+				9EC824E5222ADF92009806AC /* lldo_actions */,
+				9E065F8922BFC611006F8A1D /* lldo_helpers */,
 				9EB2ADC722232252003341F8 /* LLDOSwiftHelper */,
 				9EB2ADC622232252003341F8 /* Products */,
 			);
@@ -61,8 +69,6 @@
 		9EB2ADC722232252003341F8 /* LLDOSwiftHelper */ = {
 			isa = PBXGroup;
 			children = (
-				9EC824E5222ADF92009806AC /* lldb_actions */,
-				9EB2ADE92223251C003341F8 /* swift_helper */,
 				9EB2ADC822232252003341F8 /* AppDelegate.swift */,
 				9EB2ADCC22232252003341F8 /* Main.storyboard */,
 				9EB2ADCF22232253003341F8 /* Assets.xcassets */,
@@ -72,23 +78,12 @@
 			path = LLDOSwiftHelper;
 			sourceTree = "<group>";
 		};
-		9EB2ADE92223251C003341F8 /* swift_helper */ = {
+		9EC824E5222ADF92009806AC /* lldo_actions */ = {
 			isa = PBXGroup;
 			children = (
-				9EB2ADEB2223251C003341F8 /* load_swift.py */,
-				9E19777F2226A9440068CDB1 /* NSObject+LLDO.swift */,
-				9EB2ADEA2223251C003341F8 /* UIView+LLDO.swift */,
-				9EB2ADEC2223251C003341F8 /* UIViewController+LLDO.swift */,
+				9E065F8122BFB50A006F8A1D /* login.swift */,
 			);
-			path = swift_helper;
-			sourceTree = SOURCE_ROOT;
-		};
-		9EC824E5222ADF92009806AC /* lldb_actions */ = {
-			isa = PBXGroup;
-			children = (
-				9EC824E6222ADFC5009806AC /* login.lldb */,
-			);
-			path = lldb_actions;
+			path = lldo_actions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,7 +144,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EB2ADEE2223251C003341F8 /* load_swift.py in Resources */,
 				9EB2ADD322232253003341F8 /* LaunchScreen.storyboard in Resources */,
 				9EB2ADD022232253003341F8 /* Assets.xcassets in Resources */,
 				9EB2ADCE22232252003341F8 /* Main.storyboard in Resources */,
@@ -163,9 +157,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E1977802226A9440068CDB1 /* NSObject+LLDO.swift in Sources */,
-				9EB2ADEF2223251C003341F8 /* UIViewController+LLDO.swift in Sources */,
-				9EB2ADED2223251C003341F8 /* UIView+LLDO.swift in Sources */,
 				9EB2ADC922232252003341F8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

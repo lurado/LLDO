@@ -1,4 +1,0 @@
-ps UIView.find(byAccessibilityID: "username_input")?.enterText("lldo@lurado.com")
-ps UIView.find(byAccessibilityID: "password_input")?.enterText("awesome")
-ps UISwitch.first()?.slide()
-ps UIButton.first()?.tap()

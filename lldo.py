@@ -2,13 +2,15 @@ import lldb
 import os
 import re
 import textwrap
+import glob
 
 kNoResult = 0x1001
 
 def __lldb_init_module(debugger, internal_dict):
   commands = [
-    load_swift,
     lldo,
+    load_lldo_actions,
+    load_swift_file,
     load_swift_runtime
   ]
   for function in commands:
@@ -16,10 +18,11 @@ def __lldb_init_module(debugger, internal_dict):
     debugger.HandleCommand("command script add -f {0}.{1} {1}".format(__name__, function.__name__))
 
 
-def rel_path_to(file):
+def _rel_path_to(file):
   return os.path.join(os.path.dirname(__file__), file)
 
-def load_swift_file(path, ctx, result):
+
+def _load_swift_file(path, ctx, result):
   with open(os.path.expanduser(path)) as f:
     contents = f.read()
 
@@ -40,11 +43,32 @@ def loaded_libs():
   return map(lambda m: m.group(1), matches)
 
 
-def load_swift(debugger, path, ctx, result, _):
+def source_folder(result):
+  source_info_result = lldb.SBCommandReturnObject()
+  lldb.debugger.GetCommandInterpreter().HandleCommand("source info", source_info_result)
+  source_info = source_info_result.GetOutput()
+  if source_info is None or not source_info.startswith("Lines found in"):
+    result.SetError("Unable to determine source location. Did you stop at a breakpoint in your project?")
+    return
+
+  pattern = re.compile("\[.+?\): (/.*?/)[^/]*\n")
+  match = pattern.search(source_info)
+  if match is None:
+    result.SetError("Could not derive project path from source info.")
+    return
+
+  path = match.group(1)
+  return path
+
+def stopped_at_source_location():
+  return source_folder(lldb.SBCommandReturnObject()) is not None
+
+
+def load_swift_file(debugger, path, ctx, result, _):
   """
   Loads definitions from a `.swift` file.
   
-  Usage: load_swift </path/to/file.swift>
+  Usage: load_swift_file </path/to/file.swift>
   
   Load the contents of file at the given path and evaluates it in the context of the current debugger context.
   However LLDB expression evaluation is scoped. 
@@ -56,28 +80,78 @@ def load_swift(debugger, path, ctx, result, _):
   Which leaves option two: Put everything into extensions as they also outlive their direct evaluation scope.
   """
 
-  load_swift_file(path, ctx, result)
+  _load_swift_file(path, ctx, result)
 
 
 def lldo(debugger, args, ctx, result, _):
   """
-  Loads the LLDO Swift helpers.
+  Loads LLDO
 
-  For a detailed description of the available helpers check the documentation at https://github.com/lurado/LLDO/tree/master/docs/
+  Usage: lldo [<actions_path>]
+
+  Loading LLDO means two things:
+
+  1. Loading the Swift helpers. For a detailed description of the available helpers check the documentation at https://lurado.github.io/LLDO/
+  2. Loading the LLDO actions from `actions_path`. See the help of `load_lldo_actions` for details.
   """
 
-  load_swift_runtime(debugger, args, ctx, result, None)
+  load_swift_runtime(debugger, None, ctx, result, None)
+  if not result.Succeeded():
+    return
 
-  files = [
-    "NSObject+LLDO.swift",
-    "UIViewController+LLDO.swift",
-    "UIView+LLDO.swift"
-  ]
+  files = glob.glob(os.path.join(_rel_path_to("lldo_helpers"), "*.swift"))
 
   for file in files:
-    load_swift_file(rel_path_to(file), ctx, result)
+    _load_swift_file(_rel_path_to(file), ctx, result)
     if not result.Succeeded():
       return
+  
+  print("LLDO successfully loaded.")
+
+  path_given = len(args) > 0
+  if stopped_at_source_location() or path_given:
+    load_lldo_actions(debugger, args, ctx, result, None)
+  else:
+    print("Not stopped at a source location, not loading actions.")
+
+
+def load_lldo_actions(debugger, args, ctx, result, _):
+  """
+  Loads LLDO actions from a folder.
+
+  Usage: load_lldo_actions [<path>]
+
+  Creates an LLDB alias for every `.swift` file in the given directory, named after the file, that executes that file.
+  For example a `login.swift` file will create a `login` alias that executes the `login.swift` file.
+  
+  The path may be absolute or relative.
+  If it's relative, the command tries to resolve it from the source location of the current breakpoint.
+  Say your breakpoint is in `/MyProject/MyApp/AppDelegate.swift` and your actions are in `/MyProject/lldo_actions`, you need to pass `../lldo_actions`.
+  If the execution is stopped outside the application source, for example by hitting the pause button, the resolution of relative paths won't work.
+
+  The default value for `path` is `lldo_actions`.
+  """
+  path = args
+  if not path:
+    path = "lldo_actions"
+
+  if not os.path.isabs(path):
+    project_path = source_folder(result)
+    if not result.Succeeded():
+      result.SetError("Unable to load actions from: {0}.".format(path))
+      return
+    path = os.path.abspath(os.path.join(project_path, path))
+
+  actions = glob.glob(os.path.join(path, "*.swift"))
+  if not actions:
+    result.SetError("No actions found in: {0}.".format(path))
+    return
+
+  for action_path in actions:
+    print("Loading {0}...".format(action_path))
+    action_name = os.path.splitext(os.path.basename(action_path))[0]
+    alias = "command alias {0} load_swift_file {1}".format(action_name, action_path)
+    debugger.HandleCommand(alias)
 
 
 def load_swift_runtime(debugger, args, ctx, result, _):

@@ -21,11 +21,18 @@ class ViewController: UIViewController {
     @IBOutlet private var usernameTextField: UITextField!
     @IBOutlet private var passwordTextField: UITextField!
     
+    private func showMessase(_ message: String) {
+        let alert = UIAlertController(title: message, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+        print(message)
+    }
+    
     @IBAction func login() {
         if usernameTextField.text == "lldo@lurado.com" && passwordTextField.text == "awesome" {
-            print("Access Granted 🎉")
+            showMessase("Access Granted 🎉")
         } else {
-            print("Access Denied 🚨")
+            showMessase("Access Denied 🚨")
         }
     }
 }
