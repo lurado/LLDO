@@ -36,7 +36,7 @@ and call the combined action from LLDB: `(lldb) login`.
   - `lldo ../lldo_actions` (load LLDO helpers and automation actions)
   - `login` (call `login` action)
 
-Of course this works for all kinds of forms and basically every workflow that brings your app into a desired state can be automated.
+Of course, this works for all kinds of forms. Every workflow that brings your app into a desired state can be automated.
 
 
 ## Helpers
@@ -116,9 +116,9 @@ Otherwise you would have to press "Continue" every time the breakpoints are hit.
 If your whole team uses LLDO, you can share common breakpoints by right clicking them and selecting "Share Breakpoint".
 
 
-### Objective-C Only Projects on a Device
+### Pure Objective-C Projects On a Device
 
-To be able to use the Swift helpers (and thus LLDO) in an Objective-C only project on a device, you need to bundle the necessary Swift runtime libraries:
+To be able to use the Swift helpers (and thus LLDO) in an Objective-C project on an iOS device, you need to bundle the necessary Swift runtime libraries:
 
 1. Add a single Swift file
 1. Do **not** create a bridging header
